@@ -5,11 +5,9 @@
 #Not sure how to deal with multiple categories for a single image.
 
 # Add in all the extra hierarchical taxonomic info
-
-library(here)
 library(tidyverse)
 library(data.table)
-here()
+
 
 #Import pooled csv
 df<-read_csv("Data/pooled_csv/comprehensive.csv")
