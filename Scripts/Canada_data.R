@@ -1,4 +1,4 @@
-setwd("N:/Wildlife-Livestock-Health-Team/NationalFeralSwineProgram/Projects/Automated Camera Trap Classification/Brook_Images")
+#set wd to location of images
 list.files(pattern='IMG')
 
 table(brook$Animal)
@@ -71,5 +71,5 @@ br.df$sp_label<-ifelse(br.df$species=='Canidae', 3,
                                                                                ifelse(br.df$species=='White-tailed deer', 18,
                                                                                       ifelse(br.df$species=='Wild pig',22,'flag')))))))))))
 
-write.csv(br.df, "Brook_images.csv")
+# write out csv
 table(br.df$species)
