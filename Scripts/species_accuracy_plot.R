@@ -1,11 +1,8 @@
 # Evaluating Initial Model Run for Accuracy
 library(tidyverse)
-library(here)
 library(ggrepel)
 library(scales)
 library(forcats)
-here()
-
 
 # read data
 l1 <- read.csv('Data/initial_model_runs/accuracyAssessments_L1.csv')
