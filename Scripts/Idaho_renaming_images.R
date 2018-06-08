@@ -11,8 +11,8 @@
 # Recursive Naming
 
 #set root as wd
-# setwd("E:/ID_test")
-# root_path<-"E:/ID_test"
+setwd("E:/Idaho_images")
+root_path<-"E:/Idaho_images"
 level1_dirs<-list.files()
 
 #first level
@@ -34,7 +34,7 @@ for (i in 1:length(level1_dirs)){
      tmp_path3<-paste(tmp_path2, level3_dirs[k], sep='/')
      setwd(tmp_path3)
      level4_head<-paste(level3_head, level3_dirs[k], sep='_')
-     level4_dirs<-list.files()
+     level4_dirs<-list.files(pattern='RECNX')
       
         #fourth level
         for(m in 1:length(level4_dirs)){
@@ -46,6 +46,24 @@ for (i in 1:length(level1_dirs)){
      }
   }
 }   #this takes a long time because there are 1.2 million images to find and rename
+# took about 45 minutes
+
+
+
+
+
+
+
 
 #####################################################################################
+# Now to pull out all the csv's and add the correct filenames
+
+
+
+
+
+
+
+
+
 
