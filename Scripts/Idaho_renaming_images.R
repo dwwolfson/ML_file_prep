@@ -48,9 +48,52 @@ for (i in 1:length(level1_dirs)){
 }   #this takes a long time because there are 1.2 million images to find and rename
 # took about 45 minutes
 
+# There was an aborted run because I didn't have the pattern='RECNX'; and the following folders are now DOUBLE-labeled
+# Beaverhead AM174-AM180  (I hope these are the only ones, fingers crossed)
+
+# I think I need to fix this before I move on to the csv
+setwd("E:/Idaho_images/Beaverhead")
+root_path<-"E:/Idaho_images/Beaverhead"
+
+level1_dirs<-c('AM174','AM177', 'AM178', 'AM179', 'AM180')
+
+for(i in 1:length(level1_dirs)){
+  tmp_path1<-paste(root_path, level1_dirs[i], sep='/')
+  setwd(tmp_path1)
+  level2_dirs<-list.files(pattern='Trip*')  #only grab folders named (trip 1, trip 2, etc), and not the backup folder
+  level2_head<-paste(level1_dirs[i])
+  
+  for(j in length(level2_dirs)){
+    tmp_path2<-paste(tmp_path1, level2_dirs[j], sep='/')
+    setwd(tmp_path2)
+   level3_head<-paste(level2_head, level2_dirs[j], sep='_')
+   level3_dirs<-list.files(pattern='RECNX')
+   
+   for(k in length(level3_dirs)){
+     tmp_path3<-paste(tmp_path2, level3_dirs[k], sep='/')
+     setwd(tmp_path3)
+     level4_files<-list.files(pattern='(.\\.jpg|\\.JPG)$')
+     cut_names<-paste(sapply(level4_files, function(x)
+       paste(
+         strsplit(x,'_')[[1]][4],
+         strsplit(x,'_')[[1]][5],
+         strsplit(x,'_')[[1]][6],
+         strsplit(x,'_')[[1]][7],
+         strsplit(x,'_')[[1]][8],sep='_'
+       )))
+     file.rename(from=level4_files, to=cut_names)
+   }
+   }
+}
+
+#This didn't work. I'm just going to remove those cameras. It's only 60,000 images from 1.2 million.
 
 
-
+paste(strsplit('Beaverhead_AM174_Trip 1_Beaverhead_AM174_Trip 1_IMG_0001.JPG', '_')[[1]][4],
+      strsplit('Beaverhead_AM174_Trip 1_Beaverhead_AM174_Trip 1_IMG_0001.JPG', '_')[[1]][5],
+      strsplit('Beaverhead_AM174_Trip 1_Beaverhead_AM174_Trip 1_IMG_0001.JPG', '_')[[1]][6],
+      strsplit('Beaverhead_AM174_Trip 1_Beaverhead_AM174_Trip 1_IMG_0001.JPG', '_')[[1]][7],
+      strsplit('Beaverhead_AM174_Trip 1_Beaverhead_AM174_Trip 1_IMG_0001.JPG', '_')[[1]][8], sep='_')
 
 
 
