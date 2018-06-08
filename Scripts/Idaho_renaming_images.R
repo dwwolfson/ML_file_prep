@@ -11,16 +11,16 @@
 # Recursive Naming
 
 #set root as wd
-setwd("E:/Idaho_images")
-root_path<-"E:/Idaho_images"
+# setwd("E:/ID_test")
+# root_path<-"E:/ID_test"
 level1_dirs<-list.files()
 
 #first level
 for (i in 1:length(level1_dirs)){
   tmp_path1<-paste(root_path, level1_dirs[i], sep='/')
   setwd(tmp_path1)
-  level2_dirs<-list.files()
-  level2_head<-level1_dirs[i]
+  level2_dirs<-list.files(pattern='AM') #so that it won't get hung up on those two folders with csv's
+  level2_head<-level1_dirs[i] 
   
   #second level
   for(j in 1:length(level2_dirs)){
@@ -29,15 +29,23 @@ for (i in 1:length(level1_dirs)){
   level3_dirs<-list.files(pattern='Trip*')  #only grab folders named (trip 1, trip 2, etc), and not the backup folder
   level3_head<-paste(level2_head, level2_dirs[j], sep="_")
     
-     #third and fourth level  ***the third level will always be '100RECNX' so no extra loop needed
+     #third level  
      for(k in 1:length(level3_dirs)){
-     tmp_path3<-paste(tmp_path2, level3_dirs[k], '100RECNX', sep='/')
-     level4_head<-paste(level3_head, level3_dirs[k], '100RECNX', sep='_')
+     tmp_path3<-paste(tmp_path2, level3_dirs[k], sep='/')
      setwd(tmp_path3)
-     level4_files<-list.files(pattern='(.\\.jpg|\\.JPG)$') #only grab images 
-     file.rename(level4_files, paste(level4_head, level4_files, sep='_'))
-     
+     level4_head<-paste(level3_head, level3_dirs[k], sep='_')
+     level4_dirs<-list.files()
+      
+        #fourth level
+        for(m in 1:length(level4_dirs)){
+        tmp_path4<-paste(tmp_path3, level4_dirs[m], sep='/')
+        setwd(tmp_path4)
+        level5_files<-list.files(pattern='(.\\.jpg|\\.JPG)$') #only grab images 
+        file.rename(level5_files, paste(level4_head, level5_files, sep='_'))
     }
+     }
   }
-}
+}   #this takes a long time because there are 1.2 million images to find and rename
+
+#####################################################################################
 
