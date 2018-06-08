@@ -1,11 +1,27 @@
 # Recombine csv for Idaho photos
-
+library(tidyverse)
 # Two main jobs:
 # 1) go through and load all the csvs into one big file
 # 2) work through the mess of the csvs and get a species label
 
-alldat<-
+df <- read_csv("E:/ID_test/site_A/AM1/Trip 1/100RECNX/TimelapseData.csv")
+my_names<-colnames(df)
+
+
+
+alldat<-data.frame(matrix(NA, nrow=1, ncol=58))
+colnames(alldat)<-my_names
+colnames(alldat)[58]<-'X58'
   #Task 1 should be a relatively simple looping exercise
+
+# I know it's slow and memory inefficient to grow objects during a loop, but I won't know the size of each csv to 
+# import or the final size, and I don't want to use matrices instead of dataframes because I want to be able to 
+# have different class columns.
+
+# A better way might be to store every csv as a dataframe in a list during the loop and then deal with it 
+# afterwards outside of the loop, maybe with do.call, but I want to see if this will work.
+
+
   #set root as wd
   setwd("E:/Idaho_images")
 root_path<-"E:/Idaho_images"
@@ -17,6 +33,7 @@ for (i in 1:length(level1_dirs)){
   setwd(tmp_path1)
   level2_dirs<-list.files(pattern='AM') #so that it won't get hung up on those two folders with csv's
   level2_head<-level1_dirs[i] 
+  print(i) #tells me when it's half done
   
   #second level
   for(j in 1:length(level2_dirs)){
@@ -24,6 +41,7 @@ for (i in 1:length(level1_dirs)){
     setwd(tmp_path2)
     level3_dirs<-list.files(pattern='Trip*')  #only grab folders named (trip 1, trip 2, etc), and not the backup folder
     level3_head<-paste(level2_head, level2_dirs[j], sep="_")
+    # would've been nice to add paste(i, j, sep='_) to see when each camera is done
     
     #third level  
     for(k in 1:length(level3_dirs)){
@@ -37,12 +55,19 @@ for (i in 1:length(level1_dirs)){
         tmp_path4<-paste(tmp_path3, level4_dirs[m], sep='/')
         setwd(tmp_path4)
         tmpdf<-read_csv('TimelapseData.csv')
+        if(ncol(tmpdf)==57){
+          tmpdf[,58]<-NA
+          colnames(tmpdf)[58]<-'X58'
+        }
+        alldat<-rbind(alldat, tmpdf)
       }
     }
   }
 } 
 
-
+#broke at 'Beaverhead/AM188/Trip 1/100RECNX/ because there was one less column than the rest of the csvs, but it just 
+# wasn't adding the extra row name 'counter' column, not sure why
+# I fixed this issue by adding another column to the tibble if it needs it.
 
 
 
@@ -53,6 +78,12 @@ for (i in 1:length(level1_dirs)){
 # Task 2
 #after reading the csv, I should probably only keep the info I need and dump the rest
 df <- read.csv("E:/ID_test/site_A/AM1/Trip 1/100RECNX/TimelapseData.csv", stringsAsFactors=FALSE)
+
+
+
+
+
+
 
 # I can't use the 5 'species present columns because there 
 
